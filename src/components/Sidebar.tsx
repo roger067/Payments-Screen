@@ -1,5 +1,11 @@
-import { Flex } from "../ui";
+import styled from "styled-components";
+import { COLORS, Flex } from "../ui";
 
-const Sidebar = () => <Flex>teste</Flex>;
+const Sidebar = () => <SidebarTag>teste</SidebarTag>;
+
+const SidebarTag = styled(Flex)`
+  background: ${COLORS.GREEN_500};
+  height: 100%;
+`;
 
 export default Sidebar;
