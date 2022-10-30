@@ -1033,7 +1033,7 @@
     "core-js-pure" "^3.25.1"
     "regenerator-runtime" "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.19.0", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   "integrity" "sha512-EXpLCrk55f+cYqmHsSR+yD/0gAIMxxA9QK9lnQWzhMCvt+YmoBN7Zx94s++Kv0+unHk39vxNO8t+CMA2WSS3wA=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.19.4.tgz"
   "version" "7.19.4"
@@ -1637,6 +1637,21 @@
   "version" "8.1.0"
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+"@styled-icons/bootstrap@^10.46.0":
+  "integrity" "sha512-Lbf65X45/M+I8j2czmR79+qmA2IK5XqihF7zH32XXN62+V+cgDxDNXlkz6xGkUk0TK/DVx7BxIfIx1EG5kyUhg=="
+  "resolved" "https://registry.npmjs.org/@styled-icons/bootstrap/-/bootstrap-10.46.0.tgz"
+  "version" "10.46.0"
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+    "@styled-icons/styled-icon" "^10.7.0"
+
+"@styled-icons/styled-icon@^10.7.0":
+  "integrity" "sha512-SCrhCfRyoY8DY7gUkpz+B0RqUg/n1Zaqrr2+YKmK/AyeNfCcoHuP4R9N4H0p/NA1l7PTU10ZkAWSLi68phnAjw=="
+  "resolved" "https://registry.npmjs.org/@styled-icons/styled-icon/-/styled-icon-10.7.0.tgz"
+  "version" "10.7.0"
+  dependencies:
+    "@babel/runtime" "^7.19.0"
 
 "@styled-system/background@^5.1.2":
   "integrity" "sha512-jtwH2C/U6ssuGSvwTN3ri/IyjdHb8W9X/g8Y0JLcrH02G+BW3OS8kZdHphF1/YyRklnrKrBT2ngwGUK6aqqV3A=="
@@ -7675,7 +7690,7 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"react@^18.0.0", "react@^18.2.0", "react@>= 16", "react@>= 16.8.0":
+"react@*", "react@^18.0.0", "react@^18.2.0", "react@>= 16", "react@>= 16.8.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -8441,7 +8456,7 @@
   "resolved" "https://registry.npmjs.org/style-loader/-/style-loader-3.3.1.tgz"
   "version" "3.3.1"
 
-"styled-components@^5.3.6", "styled-components@>= 2":
+"styled-components@*", "styled-components@^5.3.6", "styled-components@>= 2", "styled-components@>=4.1.0 <6":
   "integrity" "sha512-hGTZquGAaTqhGWldX7hhfzjnIYBZ0IXQXkCYdvF1Sq3DsUaLx6+NTHC5Jj1ooM2F68sBiVz3lvhfwQs/S3l6qg=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-5.3.6.tgz"
   "version" "5.3.6"
