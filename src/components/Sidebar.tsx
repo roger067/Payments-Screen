@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
+import Cards from "react-credit-cards";
+import { ChevronLeft } from "@styled-icons/bootstrap";
+
 import { COLORS, Flex, Text } from "../ui";
 import { ReactComponent as CreditCard } from "../assets/credit-card.svg";
-import { ChevronLeft } from "@styled-icons/bootstrap";
 
 const Sidebar = () => (
   <SidebarTag flexDirection="column">
@@ -19,7 +21,7 @@ const Sidebar = () => (
       </Text>
     </BackToPrevStep>
 
-    <Flex>
+    <Flex mb="30px" className="title">
       <CreditCard />
       <Text
         ml="18px"
@@ -31,6 +33,12 @@ const Sidebar = () => (
         Adicione um novo cartão de crédito
       </Text>
     </Flex>
+    <Cards
+      cvc="132"
+      expiry="12/07"
+      name="Rogério Moura"
+      number="1234567812345678"
+    />
   </SidebarTag>
 );
 
@@ -41,8 +49,35 @@ const SidebarTag = styled(Flex)`
   padding: 50px 8px;
   max-width: 325px;
 
+  @media (max-width: 720px) {
+    max-width: 100%;
+    height: auto;
+    padding-bottom: 0;
+
+    .title {
+      margin-bottom: 16px;
+    }
+
+    .rccs__card {
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: -20%;
+    }
+  }
+
   span {
     max-width: 202px;
+  }
+
+  .rccs {
+    padding: 0;
+    width: 100%;
+
+    .rccs__card {
+      height: 302px;
+      width: 150%;
+    }
   }
 `;
 

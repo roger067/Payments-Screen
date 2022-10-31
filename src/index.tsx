@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createGlobalStyle } from "styled-components";
 
+import "react-credit-cards/es/styles-compiled.css";
+
 import App from "./App";
 
 const root = ReactDOM.createRoot(

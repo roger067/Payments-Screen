@@ -15,6 +15,10 @@ const Payment = () => {
 
 const PaymentWrapper = styled(Flex)`
   height: 100%;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+  }
 `;
 
 export default Payment;
