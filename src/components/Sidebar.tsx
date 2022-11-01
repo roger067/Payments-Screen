@@ -5,12 +5,14 @@ import { ChevronLeft } from "@styled-icons/bootstrap";
 
 import { COLORS, Flex, Text } from "../ui";
 import { ReactComponent as CreditCard } from "../assets/credit-card.svg";
+import { PaymentForm, FormKeys } from "../pages/Payment";
 
 interface Props {
-  cardNumber: string;
+  paymentForm: PaymentForm;
+  focusedField: FormKeys;
 }
 
-const Sidebar: React.FC<Props> = ({ cardNumber }) => (
+const Sidebar: React.FC<Props> = ({ paymentForm, focusedField }) => (
   <SidebarTag flexDirection="column">
     <BackToPrevStep as="a" alignItems="center" mb="50px" href="">
       <ChevronLeft size={16} color={COLORS.WHITE} />
@@ -51,10 +53,13 @@ const Sidebar: React.FC<Props> = ({ cardNumber }) => (
         </Text>
       </Flex>
       <Cards
-        cvc="132"
-        expiry="12/07"
-        name="Rogério Moura"
-        number={cardNumber}
+        cvc={paymentForm.cvc.value}
+        expiry={paymentForm.expiry.value || "0000"}
+        name={paymentForm.name.value}
+        focused={focusedField}
+        number={paymentForm.number.value}
+        locale={{ valid: "" }}
+        placeholders={{ name: "NOME DO TITULAR" }}
       />
     </Flex>
   </SidebarTag>

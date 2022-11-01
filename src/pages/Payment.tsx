@@ -5,8 +5,36 @@ import { Form, Sidebar } from "../components";
 import { Container, Flex, Steps } from "../ui";
 import { Step } from "../ui/Steps";
 
+export type FormKeys = "name" | "expiry" | "cvc" | "number";
+
+export type PaymentForm = {
+  [key in FormKeys]: {
+    value: string;
+    hasError: boolean;
+  };
+};
+
 const Payment = () => {
-  const [cardNumber, setCardNumber] = useState("");
+  const [paymentForm, setPaymentForm] = useState({
+    name: {
+      value: "",
+      hasError: false,
+    },
+    expiry: {
+      value: "",
+      hasError: false,
+    },
+    cvc: {
+      value: "",
+      hasError: false,
+    },
+    number: {
+      value: "",
+      hasError: false,
+    },
+  });
+
+  const [focusedField, setFocusedField] = useState<FormKeys>("name");
 
   const steps: Step[] = [
     {
@@ -25,10 +53,10 @@ const Payment = () => {
 
   return (
     <PaymentWrapper>
-      <Sidebar cardNumber={cardNumber} />
+      <Sidebar {...{ paymentForm, focusedField }} />
       <Container className="container">
         <Steps steps={steps} />
-        <Form {...{ cardNumber, setCardNumber }} />
+        <Form {...{ paymentForm, setPaymentForm, setFocusedField }} />
       </Container>
     </PaymentWrapper>
   );
