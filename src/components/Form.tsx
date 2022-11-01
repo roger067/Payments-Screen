@@ -1,4 +1,4 @@
-import { Flex } from "../ui";
+import { Button, Flex } from "../ui";
 
 interface Props {
   cardNumber: string;
@@ -7,11 +7,16 @@ interface Props {
 
 const Form: React.FC<Props> = ({ cardNumber, setCardNumber }) => {
   return (
-    <Flex>
-      <input
-        value={cardNumber}
-        onChange={(e) => setCardNumber(e.target.value)}
-      />
+    <Flex flexDirection="column">
+      <Flex my="62px">
+        <input
+          value={cardNumber}
+          onChange={(e) => setCardNumber(e.target.value)}
+        />
+      </Flex>
+      <Flex>
+        <Button>CONTINUAR</Button>
+      </Flex>
     </Flex>
   );
 };
