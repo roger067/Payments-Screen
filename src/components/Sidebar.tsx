@@ -96,7 +96,7 @@ const SidebarTag = styled(Flex)`
     }
 
     .credit-card-wrapper {
-      padding: 0 40px;
+      padding: 0 32px;
     }
 
     .rccs__card {
