@@ -1,13 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
+
 import { Form, Sidebar } from "../components";
 import { Container, Flex } from "../ui";
 
 const Payment = () => {
+  const [cardNumber, setCardNumber] = useState("");
+
   return (
     <PaymentWrapper>
-      <Sidebar />
+      <Sidebar cardNumber={cardNumber} />
       <Container>
-        <Form />
+        <Form {...{ cardNumber, setCardNumber }} />
       </Container>
     </PaymentWrapper>
   );
