@@ -22,7 +22,21 @@ const Form: React.FC<Props> = ({ cardNumber, setCardNumber }) => {
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
         />
-        <Flex justifyContent="flex-end">
+        <Flex gap="30px" className="group-wrapper">
+          <Input
+            name="cardNumber"
+            label="Validade"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+          />
+          <Input
+            name="name"
+            label="CVV"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+          />
+        </Flex>
+        <Flex justifyContent="flex-end" className="button-wrapper">
           <Button mt="20px">CONTINUAR</Button>
         </Flex>
       </StyledForm>
@@ -31,8 +45,18 @@ const Form: React.FC<Props> = ({ cardNumber, setCardNumber }) => {
 };
 
 const StyledForm = styled.form`
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    .group-wrapper {
+      gap: 10px;
+    }
+
+    .button-wrapper {
+      justify-content: center;
+    }
+  }
 `;
 
 export default Form;

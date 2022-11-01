@@ -41,7 +41,7 @@ const PaymentWrapper = styled(Flex)`
     padding-top: 50px;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     flex-direction: column;
 
     .steps {

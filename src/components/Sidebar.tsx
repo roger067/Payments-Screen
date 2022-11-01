@@ -68,7 +68,7 @@ const SidebarTag = styled(Flex)`
   padding: 50px 8px;
   max-width: 325px;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     max-width: 100%;
     height: auto;
     padding: 40px 8px 0;
@@ -101,7 +101,7 @@ const SidebarTag = styled(Flex)`
 
     .rccs__card {
       height: auto;
-      max-height: 172px;
+      max-height: 180px;
       width: 100%;
       max-width: 100%;
       margin-bottom: -20%;
