@@ -16,14 +16,14 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <InputGroup hasError={!!errorMessage}>
-      <input {...props} id={name} name={name} required />
+      <input {...props} id={name} name={name} placeholder=" " />
       <label htmlFor={name}>{label}</label>
       <small>{errorMessage}</small>
     </InputGroup>
   );
 };
 
-const InputGroup = styled.div<{ hasError: boolean }>`
+const InputGroup = styled.div<{ hasError?: boolean }>`
   width: 100%;
   position: relative;
   margin-bottom: 62px;
@@ -57,12 +57,13 @@ const InputGroup = styled.div<{ hasError: boolean }>`
   }
 
   input:focus ~ label,
-  input:valid ~ label {
+  input:not(:placeholder-shown) ~ label {
     top: -24px;
     font-size: 12px;
   }
 
   small {
+    opacity: ${({ hasError }) => (hasError ? "1" : "0")};
     position: absolute;
     left: 0;
     top: 44.5px;
@@ -70,6 +71,7 @@ const InputGroup = styled.div<{ hasError: boolean }>`
     font-size: 12px;
     line-height: 14.4px;
     color ${COLORS.RED_500};
+    transition: opacity 300ms;
   }
 `;
 

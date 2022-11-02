@@ -6,6 +6,8 @@ import { Text, COLORS } from ".";
 interface SelectProps {
   label: string;
   value: string;
+  name: string;
+  errorMessage?: string;
   onChange: (value: string) => void;
   itens: {
     label: string;
@@ -13,7 +15,14 @@ interface SelectProps {
   }[];
 }
 
-const Select: React.FC<SelectProps> = ({ label, onChange, value, itens }) => {
+const Select: React.FC<SelectProps> = ({
+  label,
+  errorMessage,
+  onChange,
+  value,
+  name,
+  itens,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(!!value);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -39,7 +48,8 @@ const Select: React.FC<SelectProps> = ({ label, onChange, value, itens }) => {
   const selectedValue = itens.find((item) => item.value === value)?.label;
 
   return (
-    <SelectGroup ref={ref}>
+    <SelectGroup ref={ref} hasError={!!errorMessage}>
+      <input type="hidden" value={value} name={name} id={name} />
       <SelectTag
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         type="button"
@@ -53,6 +63,7 @@ const Select: React.FC<SelectProps> = ({ label, onChange, value, itens }) => {
       <label className={isDropdownOpen || !!value ? "selected" : ""}>
         {label}
       </label>
+      <small className={errorMessage ? "error" : ""}>{errorMessage}</small>
       {isDropdownOpen && (
         <Dropdown>
           {itens.map((item) => (
@@ -66,7 +77,7 @@ const Select: React.FC<SelectProps> = ({ label, onChange, value, itens }) => {
   );
 };
 
-const SelectGroup = styled.div`
+const SelectGroup = styled.div<{ hasError?: boolean }>`
   position: relative;
 
   label {
@@ -84,6 +95,24 @@ const SelectGroup = styled.div`
       font-size: 12px;
     }
   }
+
+  button {
+    border-bottom: ${({ hasError }) =>
+      hasError
+        ? `1.5px solid ${COLORS.RED_500}`
+        : `1px solid ${COLORS.GREY_400}`};
+  }
+
+  small {
+    opacity: ${({ hasError }) => (hasError ? "1" : "0")};
+    position: absolute;
+    left: 0;
+    top: 44.5px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14.4px;
+    color ${COLORS.RED_500};
+  }
 `;
 
 const SelectTag = styled.button`
@@ -94,9 +123,10 @@ const SelectTag = styled.button`
   height: 39px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid ${COLORS.GREY_400};
+
   outline: none;
   cursor: pointer;
+  transition: border-bottom 300ms;
 
   svg {
     transition: transform 300ms;

@@ -77,8 +77,34 @@ const Form: React.FC<Props> = ({
     }
   };
 
+  const getEmptyFields = (
+    fields: [
+      string,
+      {
+        value: string;
+        hasError: boolean;
+      }
+    ][]
+  ) => {
+    const emptyValues = fields.filter((field) => field[1].value === "");
+
+    emptyValues.map((field) =>
+      setPaymentForm((prevState) => ({
+        ...prevState,
+        [field[0]]: {
+          value: prevState[field[0] as FormKeys].value,
+          hasError: true,
+        },
+      }))
+    );
+
+    return emptyValues;
+  };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (getEmptyFields(Object.entries(paymentForm)).length) return;
 
     registerPayment();
   };
@@ -90,6 +116,11 @@ const Form: React.FC<Props> = ({
           name="number"
           label="Número do cartão"
           value={paymentForm.number.value}
+          errorMessage={
+            paymentForm.number.hasError
+              ? "Insira o número do cartão"
+              : undefined
+          }
           onChange={(e) => handleInputChange(e.target.value, "number")}
           onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
         />
@@ -97,6 +128,9 @@ const Form: React.FC<Props> = ({
           name="name"
           label="Nome (igual ao cartão)"
           value={paymentForm.name.value}
+          errorMessage={
+            paymentForm.name.hasError ? "Insira seu nome completo" : undefined
+          }
           onChange={(e) => handleInputChange(e.target.value, "name")}
           onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
         />
@@ -105,6 +139,11 @@ const Form: React.FC<Props> = ({
             name="expiry"
             label="Validade"
             value={paymentForm.expiry.value}
+            errorMessage={
+              paymentForm.expiry.hasError
+                ? "Insira a validade do cartão"
+                : undefined
+            }
             onChange={(e) => handleInputChange(e.target.value, "expiry")}
             onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
           />
@@ -112,6 +151,9 @@ const Form: React.FC<Props> = ({
             name="cvc"
             label="CVV"
             value={paymentForm.cvc.value}
+            errorMessage={
+              paymentForm.cvc.hasError ? "Insira o CVV do cartão" : undefined
+            }
             onChange={(e) => handleInputChange(e.target.value, "cvc")}
             onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
             onBlur={() => setFocusedField("number")}
@@ -119,6 +161,12 @@ const Form: React.FC<Props> = ({
         </Flex>
         <Select
           label="Número de parcelas"
+          name="portions"
+          errorMessage={
+            paymentForm.portion.hasError
+              ? "Insira o número de parcelas"
+              : undefined
+          }
           onChange={(value) =>
             setPaymentForm((prevState) => ({
               ...prevState,
