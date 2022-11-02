@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import "react-credit-cards/es/styles-compiled.css";
-
 import App from "./App";
 import GlobalStyle from "./GlobalStyle";
+
+const { worker } = require("./mocks/browser");
+worker.start();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

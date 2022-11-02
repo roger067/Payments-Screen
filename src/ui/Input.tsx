@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ label, name, ...props }) => {
 const InputGroup = styled.div`
   width: 100%;
   position: relative;
-  margin-bottom: 42px;
+  margin-bottom: 62px;
 
   input {
     width: 100%;

@@ -7,6 +7,8 @@ import { COLORS, Flex, Text } from "../ui";
 import { ReactComponent as CreditCard } from "../assets/credit-card.svg";
 import { PaymentForm, FormKeys } from "../pages/Payment";
 
+import "react-credit-cards/es/styles-compiled.css";
+
 interface Props {
   paymentForm: PaymentForm;
   focusedField: FormKeys;
@@ -73,7 +75,7 @@ const SidebarTag = styled(Flex)`
   padding: 50px 8px;
   max-width: 325px;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1235px) {
     .rccs__card {
       max-width: 350px;
       max-height: 213px;

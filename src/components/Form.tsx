@@ -52,9 +52,40 @@ const Form: React.FC<Props> = ({
     value: portion,
   }));
 
+  const registerPayment = async () => {
+    const body = {
+      name: paymentForm.name.value,
+      number: paymentForm.number.value,
+      cvc: paymentForm.cvc.value,
+      expiry: paymentForm.expiry.value,
+      portion: paymentForm.portion.value,
+    };
+
+    try {
+      await fetch("/pagar", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      alert(JSON.stringify(body));
+    } catch {
+      alert("deu ruim");
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    registerPayment();
+  };
+
   return (
     <Flex flexDirection="column" alignItems="center" mt="62px">
-      <StyledForm>
+      <StyledForm onSubmit={onSubmit}>
         <Input
           name="number"
           label="Número do cartão"
