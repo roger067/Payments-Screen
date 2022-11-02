@@ -1,5 +1,5 @@
 import { ChevronDown } from "@styled-icons/bootstrap";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Text, COLORS } from ".";
 
@@ -16,15 +16,30 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({ label, onChange, value, itens }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(!!value);
 
+  const ref = useRef<HTMLDivElement>(null);
+
   const handleClickItem = (value: string) => {
     onChange(value);
     setIsDropdownOpen(false);
   };
 
+  const handleClickOutside = (event: Event) => {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
   const selectedValue = itens.find((item) => item.value === value)?.label;
 
   return (
-    <SelectGroup>
+    <SelectGroup ref={ref}>
       <SelectTag
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         type="button"
@@ -101,7 +116,8 @@ const Dropdown = styled.ul`
   padding: 16px 8px;
   margin: 8px 0;
   border-radius: 8px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: rgb(0 0 0 / 2%) 0px 1.4px 2.3px, rgb(0 0 0 / 4%) 0px 4px 6.3px,
+    rgb(0 0 0 / 5%) 0px 9.6px 15.1px, rgb(0 0 0 / 7%) 0px 32px 50px;
   max-height: 150px;
   list-style-type: none;
   overflow-y: auto;
