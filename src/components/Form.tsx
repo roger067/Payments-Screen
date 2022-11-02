@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { FormKeys, PaymentForm } from "../pages/Payment";
-import { Button, Flex, Input } from "../ui";
+import { Button, Flex, Input, Select } from "../ui";
 
 interface Props {
   paymentForm: PaymentForm;
   setPaymentForm: React.Dispatch<React.SetStateAction<PaymentForm>>;
   setFocusedField: React.Dispatch<React.SetStateAction<FormKeys>>;
 }
+
+const PRICE = 12000;
 
 const Form: React.FC<Props> = ({
   paymentForm,
@@ -23,6 +25,32 @@ const Form: React.FC<Props> = ({
   const handleInputFocus = (name: FormKeys) => {
     setFocusedField(name);
   };
+
+  const formatCurrency = (number: number) =>
+    new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(number);
+
+  const portions = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ];
+
+  const itens = portions.map((portion) => ({
+    label: `${portion}x ${formatCurrency(PRICE / Number(portion))} sem juros`,
+    value: portion,
+  }));
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="62px">
@@ -58,8 +86,19 @@ const Form: React.FC<Props> = ({
             onBlur={() => setFocusedField("number")}
           />
         </Flex>
-        <Flex justifyContent="flex-end" className="button-wrapper">
-          <Button mt="20px">CONTINUAR</Button>
+        <Select
+          label="Número de parcelas"
+          onChange={(value) =>
+            setPaymentForm((prevState) => ({
+              ...prevState,
+              portion: { value, hasError: false },
+            }))
+          }
+          value={paymentForm.portion.value}
+          itens={itens}
+        />
+        <Flex justifyContent="flex-end" className="button-wrapper" my="62px">
+          <Button>CONTINUAR</Button>
         </Flex>
       </StyledForm>
     </Flex>

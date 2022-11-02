@@ -8,7 +8,7 @@ import { Step } from "../ui/Steps";
 export type FormKeys = "name" | "expiry" | "cvc" | "number";
 
 export type PaymentForm = {
-  [key in FormKeys]: {
+  [key in FormKeys | "portion"]: {
     value: string;
     hasError: boolean;
   };
@@ -29,6 +29,10 @@ const Payment = () => {
       hasError: false,
     },
     number: {
+      value: "",
+      hasError: false,
+    },
+    portion: {
       value: "",
       hasError: false,
     },
