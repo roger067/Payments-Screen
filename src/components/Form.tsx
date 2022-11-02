@@ -16,9 +16,31 @@ const Form: React.FC<Props> = ({
   setFocusedField,
 }) => {
   const handleInputChange = (value: string, name: FormKeys) => {
+    let formattedText = value;
+
+    if (name === "number") {
+      formattedText = value
+        .replace(/[^0-9.]/g, "")
+        .split(" ")
+        .join("");
+      if (formattedText.length <= 16) {
+        formattedText =
+          formattedText.match(new RegExp(".{1,4}", "g"))?.join(" ") || "";
+      }
+    }
+
+    if (name === "expiry") {
+      formattedText = value
+        .replace(/[^0-9]/g, "")
+        .replace(/^([2-9])$/g, "0$1")
+        .replace(/^(1{1})([3-9]{1})$/g, "0$1/$2")
+        .replace(/^0{1,}/g, "0")
+        .replace(/^([0-1]{1}[0-9]{1})([0-9]{1,2}).*/g, "$1/$2");
+    }
+
     setPaymentForm((prevState) => ({
       ...prevState,
-      [name]: { value, hasError: false },
+      [name]: { value: formattedText, hasError: false },
     }));
   };
 
@@ -101,10 +123,20 @@ const Form: React.FC<Props> = ({
     return emptyValues;
   };
 
+  const isExpiryInvalid = () => {
+    const month = parseInt(paymentForm.expiry.value.split("/")[0]);
+    const year = parseInt(paymentForm.expiry.value.split("/")[1]);
+
+    const currentYear = parseInt(new Date().getFullYear().toString().slice(-2));
+
+    return month < 1 || month > 12 || year < currentYear;
+  };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (getEmptyFields(Object.entries(paymentForm)).length) return;
+    if (getEmptyFields(Object.entries(paymentForm)).length || isExpiryInvalid())
+      return;
 
     registerPayment();
   };
@@ -115,10 +147,11 @@ const Form: React.FC<Props> = ({
         <Input
           name="number"
           label="Número do cartão"
+          maxLength={19}
           value={paymentForm.number.value}
           errorMessage={
             paymentForm.number.hasError
-              ? "Insira o número do cartão"
+              ? "Número de cartão inválido"
               : undefined
           }
           onChange={(e) => handleInputChange(e.target.value, "number")}
@@ -140,8 +173,8 @@ const Form: React.FC<Props> = ({
             label="Validade"
             value={paymentForm.expiry.value}
             errorMessage={
-              paymentForm.expiry.hasError
-                ? "Insira a validade do cartão"
+              paymentForm.expiry.hasError || isExpiryInvalid()
+                ? "Data inválida"
                 : undefined
             }
             onChange={(e) => handleInputChange(e.target.value, "expiry")}
@@ -150,11 +183,14 @@ const Form: React.FC<Props> = ({
           <Input
             name="cvc"
             label="CVV"
+            maxLength={4}
             value={paymentForm.cvc.value}
             errorMessage={
-              paymentForm.cvc.hasError ? "Insira o CVV do cartão" : undefined
+              paymentForm.cvc.hasError ? "Código inválido" : undefined
             }
-            onChange={(e) => handleInputChange(e.target.value, "cvc")}
+            onChange={(e) =>
+              handleInputChange(e.target.value.replace(/[^0-9.]/g, ""), "cvc")
+            }
             onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
             onBlur={() => setFocusedField("number")}
           />
