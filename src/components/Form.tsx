@@ -109,6 +109,10 @@ const StyledForm = styled.form`
   max-width: 600px;
   width: 100%;
 
+  @media (max-width: 1100px) {
+    max-width: 325px;
+  }
+
   @media (max-width: 768px) {
     .group-wrapper {
       gap: 10px;
