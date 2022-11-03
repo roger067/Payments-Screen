@@ -50,6 +50,7 @@ const Sidebar: React.FC<Props> = ({ paymentForm, focusedField }) => (
           color={COLORS.WHITE}
           lineHeight="24px"
           fontSize="20px"
+          className="title-text"
         >
           Adicione um novo cartão de crédito
         </Text>
@@ -74,6 +75,26 @@ const SidebarTag = styled(Flex)`
   width: 100%;
   padding: 50px 8px;
   max-width: 325px;
+
+  .mobile-anchor-text {
+    display: none;
+  }
+
+  .title-text {
+    max-width: 202px;
+  }
+
+  .rccs {
+    padding: 0;
+    width: 100%;
+
+    .rccs__card {
+      border-radius: 14.5px;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.349);
+      height: 302px;
+      width: 150%;
+    }
+  }
 
   @media (max-width: 1235px) {
     .rccs__card {
@@ -109,6 +130,10 @@ const SidebarTag = styled(Flex)`
       margin-bottom: 16px;
     }
 
+    .title-text {
+      max-width: 100%;
+    }
+
     .credit-card-wrapper {
       padding: 0 32px;
     }
@@ -119,26 +144,6 @@ const SidebarTag = styled(Flex)`
       width: 100%;
       max-width: 100%;
       margin-bottom: -73px;
-    }
-  }
-
-  .mobile-anchor-text {
-    display: none;
-  }
-
-  .anchor-text {
-    max-width: 202px;
-  }
-
-  .rccs {
-    padding: 0;
-    width: 100%;
-
-    .rccs__card {
-      border-radius: 14.5px;
-      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.349);
-      height: 302px;
-      width: 150%;
     }
   }
 `;
