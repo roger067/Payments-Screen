@@ -52,6 +52,7 @@ const Select: React.FC<SelectProps> = ({
       <input type="hidden" value={value} name={name} id={name} />
       <SelectTag
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        data-testid="select"
         type="button"
         className={isDropdownOpen ? "selected" : ""}
       >

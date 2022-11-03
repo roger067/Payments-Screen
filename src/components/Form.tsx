@@ -11,6 +11,7 @@ interface Props {
   paymentForm: PaymentForm;
   setPaymentForm: React.Dispatch<React.SetStateAction<PaymentForm>>;
   setFocusedField: React.Dispatch<React.SetStateAction<FormKeys>>;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const PRICE = 12000;
@@ -19,6 +20,7 @@ const Form: React.FC<Props> = ({
   paymentForm,
   setPaymentForm,
   setFocusedField,
+  onSubmit,
 }) => {
   const handleInputChange = (value: string, name: FormKeys) => {
     let formattedText = value;
@@ -57,8 +59,6 @@ const Form: React.FC<Props> = ({
       name: false,
     };
 
-    setFocusedField(name);
-
     setPaymentForm((prevState) => ({
       ...prevState,
       [name]: { value, hasError: mapErrors[name] },
@@ -90,69 +90,6 @@ const Form: React.FC<Props> = ({
     label: `${portion}x ${formatCurrency(PRICE / Number(portion))} sem juros`,
     value: portion,
   }));
-
-  const registerPayment = async () => {
-    const body = {
-      name: paymentForm.name.value,
-      number: paymentForm.number.value,
-      cvc: paymentForm.cvc.value,
-      expiry: paymentForm.expiry.value,
-      portion: paymentForm.portion.value,
-    };
-
-    try {
-      await fetch("/pagar", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      alert(JSON.stringify(body));
-    } catch {
-      alert("deu ruim");
-    }
-  };
-
-  const getEmptyFields = (
-    fields: [
-      string,
-      {
-        value: string;
-        hasError: boolean;
-      }
-    ][]
-  ) => {
-    const emptyValues = fields.filter((field) => field[1].value === "");
-
-    emptyValues.map((field) =>
-      setPaymentForm((prevState) => ({
-        ...prevState,
-        [field[0]]: {
-          value: prevState[field[0] as FormKeys].value,
-          hasError: true,
-        },
-      }))
-    );
-
-    return emptyValues;
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (
-      getEmptyFields(Object.entries(paymentForm)).length ||
-      isCardNumberInvalid(paymentForm.number.value) ||
-      isExpiryInvalid(paymentForm.expiry.value) ||
-      isCVVInvalid(paymentForm.cvc.value)
-    )
-      return;
-
-    registerPayment();
-  };
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="62px">
@@ -204,7 +141,10 @@ const Form: React.FC<Props> = ({
               handleInputChange(e.target.value.replace(/[^0-9.]/g, ""), "cvc")
             }
             onFocus={(e) => setFocusedField("cvc")}
-            onBlur={(e) => handleInputBlur(e.target.value, "cvc")}
+            onBlur={(e) => {
+              setFocusedField("number");
+              handleInputBlur(e.target.value, "cvc");
+            }}
           />
         </Flex>
         <Select
