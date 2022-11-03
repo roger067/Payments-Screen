@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { FormKeys, PaymentForm } from "../pages/Payment";
 import { Button, Flex, Input, Select } from "../ui";
+import {
+  isCardNumberInvalid,
+  isCVVInvalid,
+  isExpiryInvalid,
+} from "../utils/validator";
 
 interface Props {
   paymentForm: PaymentForm;
@@ -44,8 +49,20 @@ const Form: React.FC<Props> = ({
     }));
   };
 
-  const handleInputFocus = (name: FormKeys) => {
+  const handleInputBlur = (value: string, name: FormKeys) => {
+    const mapErrors = {
+      cvc: isCVVInvalid(value),
+      number: isCardNumberInvalid(value),
+      expiry: isExpiryInvalid(value),
+      name: false,
+    };
+
     setFocusedField(name);
+
+    setPaymentForm((prevState) => ({
+      ...prevState,
+      [name]: { value, hasError: mapErrors[name] },
+    }));
   };
 
   const formatCurrency = (number: number) =>
@@ -123,19 +140,15 @@ const Form: React.FC<Props> = ({
     return emptyValues;
   };
 
-  const isExpiryInvalid = () => {
-    const month = parseInt(paymentForm.expiry.value.split("/")[0]);
-    const year = parseInt(paymentForm.expiry.value.split("/")[1]);
-
-    const currentYear = parseInt(new Date().getFullYear().toString().slice(-2));
-
-    return month < 1 || month > 12 || year < currentYear;
-  };
-
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (getEmptyFields(Object.entries(paymentForm)).length || isExpiryInvalid())
+    if (
+      getEmptyFields(Object.entries(paymentForm)).length ||
+      isCardNumberInvalid(paymentForm.number.value) ||
+      isExpiryInvalid(paymentForm.expiry.value) ||
+      isCVVInvalid(paymentForm.cvc.value)
+    )
       return;
 
     registerPayment();
@@ -155,17 +168,18 @@ const Form: React.FC<Props> = ({
               : undefined
           }
           onChange={(e) => handleInputChange(e.target.value, "number")}
-          onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
+          onBlur={(e) => handleInputBlur(e.target.value, "number")}
         />
         <Input
           name="name"
           label="Nome (igual ao cartão)"
           value={paymentForm.name.value}
+          maxLength={22}
           errorMessage={
             paymentForm.name.hasError ? "Insira seu nome completo" : undefined
           }
           onChange={(e) => handleInputChange(e.target.value, "name")}
-          onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
+          onBlur={(e) => handleInputBlur(e.target.value, "name")}
         />
         <Flex gap="30px" className="group-wrapper">
           <Input
@@ -173,17 +187,15 @@ const Form: React.FC<Props> = ({
             label="Validade"
             value={paymentForm.expiry.value}
             errorMessage={
-              paymentForm.expiry.hasError || isExpiryInvalid()
-                ? "Data inválida"
-                : undefined
+              paymentForm.expiry.hasError ? "Data inválida" : undefined
             }
             onChange={(e) => handleInputChange(e.target.value, "expiry")}
-            onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
+            onBlur={(e) => handleInputBlur(e.target.value, "expiry")}
           />
           <Input
             name="cvc"
             label="CVV"
-            maxLength={4}
+            maxLength={3}
             value={paymentForm.cvc.value}
             errorMessage={
               paymentForm.cvc.hasError ? "Código inválido" : undefined
@@ -191,8 +203,8 @@ const Form: React.FC<Props> = ({
             onChange={(e) =>
               handleInputChange(e.target.value.replace(/[^0-9.]/g, ""), "cvc")
             }
-            onFocus={(e) => handleInputFocus(e.target.name as FormKeys)}
-            onBlur={() => setFocusedField("number")}
+            onFocus={(e) => setFocusedField("cvc")}
+            onBlur={(e) => handleInputBlur(e.target.value, "cvc")}
           />
         </Flex>
         <Select
