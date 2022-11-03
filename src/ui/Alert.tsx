@@ -9,11 +9,15 @@ interface AlertProps {
 }
 
 const Alert: React.FC<AlertProps> = ({ text, state }) => (
-  <AlertTag state={state} alignItems="center">
+  <AlertTag state={state} alignItems="center" role="alert">
     {state === "success" ? (
-      <CheckCircle color={COLORS.GREEN_700} size={20} />
+      <CheckCircle
+        color={COLORS.GREEN_700}
+        size={20}
+        data-testid="check-circle"
+      />
     ) : (
-      <XCircle color={COLORS.RED_500} size={20} />
+      <XCircle color={COLORS.RED_500} size={20} data-testid="error-circle" />
     )}
     <Text
       ml="8px"
